@@ -39,7 +39,7 @@ namespace SerialServe
                         try
                         {
                             StreamWriter writer = new StreamWriter(responses[0].Body);
-                            writer.WriteLine("{'response':'" + line + "'}");
+                            writer.Write("{\"response\":\"" + line + "\"}");
                             writer.Flush();
                             responses[0].Send();
                         }
@@ -87,12 +87,12 @@ namespace SerialServe
             switch (endpoint)
             {
                 case "":
-                    writer.WriteLine("SerialServe is running! Check out the documentation on GitHub.");
+                    writer.Write("SerialServe is running! Check out the documentation on GitHub.");
                     writer.Flush();
                     response.Send();
                     break;
                 case "list":
-                    writer.WriteLine("[" + string.Join(",", bus.Ports) + "]");
+                    writer.Write("[" + string.Join(",", bus.Ports) + "]");
                     writer.Flush();
                     response.Send();
                     break;
@@ -100,14 +100,14 @@ namespace SerialServe
                     try
                     {
                         toSerial.Write(request.QueryString["toWrite"].ToString());
-                        writer.WriteLine("{'success':true}");
+                        writer.Write("{\"success\":true}");
                         writer.Flush();
                         response.Send();
                     }
                     catch
                     {
                         response.Status = System.Net.HttpStatusCode.BadRequest;
-                        writer.WriteLine("{'error':'Could not write to the requested port.'}");
+                        writer.Write("{\"error\":\"Could not write to the requested port.\"}");
                         writer.Flush();
                         response.Send();
                     }
@@ -124,14 +124,14 @@ namespace SerialServe
                         {
                             toSerial.DtsDisable();
                         }
-                        writer.WriteLine("{'success':true}");
+                        writer.Write("{\"success\":true}");
                         writer.Flush();
                         response.Send();
                     }
                     catch
                     {
                         response.Status = System.Net.HttpStatusCode.BadRequest;
-                        writer.WriteLine("{'error':'Could not change the state of the requested port.'}");
+                        writer.Write("{\"error\":\"Could not change the state of the requested port.\"}");
                         writer.Flush();
                         response.Send();
                     }
@@ -151,7 +151,7 @@ namespace SerialServe
                     break;
                 default:
                     response.Status = System.Net.HttpStatusCode.NotFound;
-                    writer.WriteLine("Not found!");
+                    writer.Write("Not found!");
                     writer.Flush();
                     response.Send();
                     break;
