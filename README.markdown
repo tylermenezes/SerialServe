@@ -1,7 +1,7 @@
 SerialServe
 ===========
 
-SerialServe is a HTTP server which exposes local Serial ports to a web browser.
+SerialServe is an HTTP server which exposes local Serial ports to a web browser.
 
 Once you've started the server, you can connect to SerialServe by connecting to [localhost on port 9981](http://localhost:9981/). You should see a welcome message.
 
@@ -33,4 +33,4 @@ Enables the port (pulls the /Enable line high by setting DTR true in Windows).
 -----------
 Opens a request to handle incoming data. This request will block until data is recieved, or until it times out. You should always have at least one open. If more than one is open, it will send it to the longest-running connection.
 
-Read more about this method of push notifications on [the Wikipedia article on Comet](http://en.wikipedia.org/wiki/Comet_(programming)#Ajax_with_long_polling).
+Read more about this method of push notifications on [the Wikipedia article on Comet](http://en.wikipedia.org/wiki/Comet_(programming)).
