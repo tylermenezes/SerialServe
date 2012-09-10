@@ -144,15 +144,21 @@ define(['jquery'], function(jQuery){
          */
         this.constructor = function()
         {
-            if (typeof(timeout) === 'undefined') {
-                timeout = 1000;
+            if (!SerialBus.IsRunning) {
+                throw "Cannot connect to port, server is not running.";
+            } else if (!SerialBus.PortAvailable(port)) {
+                throw "Cannot connect to port, it is not currently available.";
+            } else {
+                if (typeof(timeout) === 'undefined') {
+                    timeout = 1000;
+                }
+                startLongPollThread();
             }
-            startLongPollThread();
         }
         this.constructor();
     }
 
-    var SerialBus = function()
+    var SerialBus = new (function()
     {
         /**
          * SerialPort class
@@ -174,7 +180,63 @@ define(['jquery'], function(jQuery){
                 dataType: 'json'
             });
         }
-    }
 
-    return (new SerialBus());
+        /**
+         * Checks if the specified port is available for connections.
+         * @param {number} port The number of the port to check
+         */
+        this.PortAvailable = function(port)
+        {
+            var ret = false;
+            jQuery.ajax({
+                url: endpoint + 'list/',
+                async: false,
+                timeout: 750,
+                success: function(data)
+                {
+                    ret = $.inArray(port, data) !== -1;
+                },
+                error: function()
+                {
+                    ret = false;
+                },
+                dataType: 'json'
+            });
+            return ret;
+        }
+
+        /**
+         * Caches whether the server is running or not.
+         * @type {bool}
+         */
+        var _isRunning = undefined;
+        /**
+         * Checks whether the server is running or not.
+         * @type {bool}
+         */
+        Object.defineProperty(this, "IsRunning", {
+            get: function() {
+                if (typeof(_isRunning) === 'undefined') {
+                    jQuery.ajax({
+                        url: endpoint + 'list/',
+                        async: false,
+                        timeout: 750,
+                        success: function()
+                        {
+                            _isRunning = true;
+                        },
+                        error: function()
+                        {
+                            _isRunning = false;
+                        },
+                        dataType: 'json'
+                    });
+                }
+
+                return _isRunning;
+            }
+        });
+    })();
+
+    return SerialBus;
 });

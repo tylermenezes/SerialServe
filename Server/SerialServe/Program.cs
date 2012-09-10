@@ -21,6 +21,17 @@ namespace SerialServe
 
             bus.OnIncomingSerialLine += new IncomingSerialLineHandler(bus_OnIncomingSerialLine);
 
+            Console.WriteLine("SerialServe is running, press Ctrl+C or close this window to stop the server.");
+            Console.WriteLine();
+            Console.WriteLine();
+            var previousColor = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!      Warning     !!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.WriteLine("!!!                                                                     !!!");
+            Console.WriteLine("!!!    Browsing untrusted websites with the server running is unsafe!   !!!");
+            Console.WriteLine("!!!                                                                     !!!");
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.ForegroundColor = previousColor;
 
             while (true)
             {

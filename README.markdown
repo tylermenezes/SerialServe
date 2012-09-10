@@ -38,9 +38,11 @@ serial-bus.js is SerialServe's Javascript communication library. It exposes the 
 SerialBus
 ---------
 
-Static class. Exposes the following methods:
+Static class. Exposes the following static methods:
 
  * `List(onSuccessDelegate(Array), onFailureDelegate(msg))` - Lists all attached COM ports on the current computer
+ * `IsRunning` - Checks if the server is running. Blocks for at most 750ms on the first call; cached for following calls
+ * `PortAvailable(port)` - Checks if the port is available. Same as checking if a port is in the result of List(), but it blocks. Not cached.
 
 SerialBus.SerialPort
 --------------------
